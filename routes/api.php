@@ -1,9 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\BannedController;
+use App\Http\Controllers\Api\BannedPokemonController;
 use App\Http\Controllers\Api\InfoController;
-use App\Http\Controllers\Api\CustomController;
+use App\Http\Controllers\Api\CustomPokemonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,19 +10,19 @@ use App\Http\Controllers\Api\CustomController;
 |--------------------------------------------------------------------------
 */
 
-// Info route
-Route::get('/info', [InfoController::class, 'show']);
+// Public Info route
+Route::get('/info', [InfoController::class, 'index']);
 
 // Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth.secret')->group(function () {
     // Banned routes
-    Route::post('/banned', [BannedController::class, 'store']);
-    Route::get('/banned', [BannedController::class, 'show']);
-    Route::delete('/banned/{name}', [BannedController::class, 'remove']);
+    Route::post('/banned', [BannedPokemonController::class, 'store']);
+    Route::get('/banned', [BannedPokemonController::class, 'index']);
+    Route::delete('/banned/{name}', [BannedPokemonController::class, 'destroy']);
 
     // Custom routes
-    Route::post('/custom', [CustomController::class, 'store']);
-    Route::get('/custom', [CustomController::class, 'show']);
-    Route::put('/custom/{name}', [CustomController::class, 'update']);
-    Route::delete('/custom/{name}', [CustomController::class, 'remove']);
+    Route::post('/custom', [CustomPokemonController::class, 'store']);
+    Route::get('/custom', [CustomPokemonController::class, 'index']);
+    Route::put('/custom/{name}', [CustomPokemonController::class, 'update']);
+    Route::delete('/custom/{name}', [CustomPokemonController::class, 'destroy']);
 });

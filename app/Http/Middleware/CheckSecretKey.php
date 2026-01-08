@@ -8,13 +8,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckSecretKey
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
+        $secretKey = $request->header('X-SUPER-SECRET-KEY');
+        $expectedKey = config('app.super_secret_key');
+
+        if (!$secretKey) {
+            return response()->json([
+                'error' => 'Missing X-SUPER-SECRET-KEY header'
+            ], 401);
+        }
+
+        if ($secretKey !== $expectedKey) {
+            return response()->json([
+                'error' => 'Invalid secret key'
+            ], 403);
+        }
+
         return $next($request);
     }
 }

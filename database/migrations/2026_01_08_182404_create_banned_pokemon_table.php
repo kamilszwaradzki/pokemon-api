@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('banned_pokemons', function (Blueprint $table) {
+        Schema::create('banned_pokemon', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique(); // np. "pikachu"
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banned_pokemons');
+        Schema::dropIfExists('banned_pokemon');
     }
 };
